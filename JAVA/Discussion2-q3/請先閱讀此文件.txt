@@ -1,0 +1,2 @@
+discussion2q3.class 置於 \bin 內
+discussion2q3.java 置於 \src 內
