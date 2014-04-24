@@ -16,6 +16,7 @@ namespace ConsoleApplication1
         //  Console.WriteLine("阿部生命 {0}", Battlesentaku.monsterhp1);
         a:
 
+            #region
             while (Battlesentaku.monsterhp1 * Battlesentaku.playerhp > 0)
             {
 
@@ -31,15 +32,19 @@ namespace ConsoleApplication1
                 Console.WriteLine("_________________________________________");
                 Console.WriteLine("");
 
+                
+#region
+                #region
+                #region
                 if (Battlesentaku.turn % 2 == 1)
                 {
 
                     Console.WriteLine("輪到玩家攻擊!");
 
                     Console.Write("請選擇動作: 1 攻擊 2 魔法 3 逃跑 你選擇: ");
-                    Battlesentaku.battlesentaku = Console.ReadLine();
+                    Battlesentaku.battlesentaku =Console.ReadLine();
                     Console.WriteLine("你選擇:  {0}", Battlesentaku.battlesentaku);
-
+                    #region
                     if (Battlesentaku.battlesentaku == "1")
                     {
 
@@ -63,22 +68,24 @@ namespace ConsoleApplication1
                             Console.WriteLine("瑪那不夠!");
                             Console.WriteLine("");
                         }
+                    #endregion
+                }
+               
 
-                    }
-
-                    else if (Battlesentaku.battlesentaku != "1" && Battlesentaku.battlesentaku != "2" && Battlesentaku.battlesentaku != "3" && Battlesentaku.battlesentaku != Battlesentaku.magicword)
-                    {
+                else if (Battlesentaku.battlesentaku != "1" && Battlesentaku.battlesentaku != "2" && Battlesentaku.battlesentaku != "3")
+                {
                         Console.WriteLine("輸入錯誤");
                         Console.WriteLine("");
                         goto c;
-                    }
+                }
 
-                    else if (Battlesentaku.battlesentaku == Battlesentaku.magicword)
-                    {
+                else if (Battlesentaku.battlesentaku == Battlesentaku.magicword)
+                {
                         Console.WriteLine("突然一陣強光襲來，眼前出現了謎樣的文字......");
                         Console.ReadLine();
                         Console.Write("請輸入隱含世界真理之密語:");
                         string keycheck = Console.ReadLine();
+                        #region
                         if (keycheck == Battlesentaku.keyword)
                         {
                             Console.WriteLine("");
@@ -102,35 +109,37 @@ namespace ConsoleApplication1
                             Battlesentaku.playermanadamage = 9999;
                         }
                         else { }
-                    }
+                        #endregion
+                }
 
-                    else if (Battlesentaku.battlesentaku == "3")
-                    {
+                else if (Battlesentaku.battlesentaku1 == "3")
+                {
 
-                        //double runrate = Randomglobal.Attackcriticalrate(1);
                         Console.WriteLine("");
                         Console.WriteLine("恭喜!逃跑失敗!");
                         Console.WriteLine("");
                         Battlesentaku.turn++;
-                    }
+                }
 
-                    else
-                    {
+                else
+                {
                         Console.WriteLine("輸入錯誤!");
                         Console.WriteLine("用掉一回合。");
                         Console.ReadLine();
-                    }
+                }
+                #endregion
+                #endregion
                 }
 
 
 
-                else if (Battlesentaku.battlesentaku == "1" && Battlesentaku.monsterhp1 - 8 <= 0)
+                else if (Battlesentaku.battlesentaku1 == "1" && Battlesentaku.monsterhp1 - 8 < 0)
                 {
                     Battlesentaku.monsterhp1 = Battlesentaku.monsterhp1 - 500;
                     break;
                 }
 
-                else if (Battlesentaku.battlesentaku == "2" && Battlesentaku.monsterhp1 - 15 <= 0)
+                else if (Battlesentaku.battlesentaku1 == "2" && Battlesentaku.monsterhp1 - 15 < 0)
                 {
                     Battlesentaku.monsterhp1 = Battlesentaku.monsterhp1 - 500;
                     break;
@@ -139,7 +148,8 @@ namespace ConsoleApplication1
                 else { }
 
 
-
+#endregion
+#region
 
 
 
@@ -175,7 +185,8 @@ namespace ConsoleApplication1
                 }
                 else { }
 
-
+#endregion
+#region
                 if (Battlesentaku.monsterhp1 <= 0)
                 {
                     Console.WriteLine("恭喜擊敗!");
@@ -189,7 +200,7 @@ namespace ConsoleApplication1
                     Battlesentaku.battlesentaku1 = Console.ReadLine();
                     if (Battlesentaku.battlesentaku1 == "1")
                     {
-                        Battlesentaku.playerhp = 1;
+                        Battlesentaku.playerhp = 100;
                         Battlesentaku.monsterhp1 = 130;
                         Battlesentaku.playermana = 100;
                         failedcount++;
@@ -237,26 +248,26 @@ namespace ConsoleApplication1
                                 Console.WriteLine("");
                                 break;
                         }
-                    }
-                        else
-                        {
-                    Console.WriteLine("input error!");
-                    Console.WriteLine("");
 
-                        }
                         goto a;
-                    
+                    }
                 }
 
                 else if (Battlesentaku.battlesentaku1 == "2")
                 {
                     System.Environment.Exit(System.Environment.ExitCode);
                 }
-                else{}
 
+
+                else
+                {
+                }
+#endregion
             }
-            
+
+#endregion
         }
+          
 
     }
 }

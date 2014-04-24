@@ -13,10 +13,10 @@ namespace ConsoleApplication1
 
         a:
 
-            while (Battlesentaku.monsterhp1 > 0 && Battlesentaku.playerhp > 0)
+            while (Battlesentaku.monsterhp1 >0 || Battlesentaku.playerhp > 0)
             {
             c:
-
+                
                 Console.WriteLine("");
                 Console.WriteLine("目前訊息");
                 Console.WriteLine("貞子生命 {0}", Battlesentaku.monsterhp1);
@@ -24,20 +24,20 @@ namespace ConsoleApplication1
                 Console.WriteLine("玩家魔力 {0}", Battlesentaku.playermana);
                 Console.WriteLine("__________________________________________________________");
                 Console.WriteLine("");
-
+               
                 if (Battlesentaku.turn % 2 == 1)
                 {
                     Console.WriteLine("輪到玩家攻擊!");
                     Console.Write("請選擇動作: 1 攻擊 2 魔法 3 逃跑 你選擇: ");
                     Battlesentaku.battlesentaku = Console.ReadLine();
-
-                    if (Battlesentaku.battlesentaku == "1" && Battlesentaku.monsterhp1 - 8 > 0)
+                 
+                    if (Battlesentaku.battlesentaku == "1" && Battlesentaku.monsterhp1-8>0)
                     {
                         Console.WriteLine("");
                         Console.WriteLine("你的攻擊產生了{0}的物理傷害!", Battlesentaku.playerdamage);
                         Battlesentaku.monsterhp1 = Battlesentaku.monsterhp1 - Battlesentaku.playerdamage;
                         Battlesentaku.turn = Battlesentaku.turn + 1;
-
+                        
                     }
 
                     else if (Battlesentaku.battlesentaku == "2" && Battlesentaku.monsterhp1 - 15 > 0)
@@ -86,15 +86,15 @@ namespace ConsoleApplication1
                         Console.WriteLine("");
                         goto c;
                     }
-                    // else { }
+                   // else { }
 
-                    else if (Battlesentaku.battlesentaku == "1" && Battlesentaku.monsterhp1 - 8 <= 0)
+                    else if(Battlesentaku.battlesentaku == "1" && Battlesentaku.monsterhp1 - 8 < 0 )
                     {
                         Battlesentaku.monsterhp1 = Battlesentaku.monsterhp1 - 500;
                         break;
                     }
 
-                    else if (Battlesentaku.battlesentaku == "2" && Battlesentaku.monsterhp1 - 15 <= 0)
+                    else if (Battlesentaku.battlesentaku == "2" && Battlesentaku.monsterhp1 - 15 < 0)
                     {
                         Battlesentaku.monsterhp1 = Battlesentaku.monsterhp1 - 500;
                         break;
@@ -102,7 +102,7 @@ namespace ConsoleApplication1
                     else { }
 
                 }
-
+                else { }
 
 
                 if (Battlesentaku.turn % 2 == 0)//貞子攻擊回合
@@ -131,54 +131,47 @@ namespace ConsoleApplication1
 
                 }
                 else { }
-
-
+            }
+    
                 if (Battlesentaku.monsterhp1 <= 0)
                 {
                     Console.WriteLine("恭喜擊敗!");
                     Console.WriteLine("");
                     Console.WriteLine("__________________________________________________________");
                 }
-                if (Battlesentaku.playerhp <= 0)
+                else if (Battlesentaku.playerhp <= 0)
                 {
-
                     Console.WriteLine("你失敗了!要再試一次嗎?");
                     Console.WriteLine("選1代表繼續,選2代表關閉程式");
                     Console.Write("你選擇? ");
-                    Battlesentaku.battlesentaku1 =Console.ReadLine();
-                    if (Battlesentaku.battlesentaku1 == "1")
+                    Battlesentaku.battlesentaku = Console.ReadLine();
+                    if (Battlesentaku.battlesentaku == "1")
                     {
                         Battlesentaku.playerhp = 100;
                         Battlesentaku.monsterhp1 = 100;
                         Battlesentaku.playermana = 100;
-                        Battlesentaku.battlesentaku1 = null;
                         goto a;
                     }
-                    else if (Battlesentaku.battlesentaku1 == "2")
+                    else if (Battlesentaku.battlesentaku == "2")
                     {
                         System.Environment.Exit(System.Environment.ExitCode);
                     }
-                    else
-                    {
-                        Console.WriteLine("input error!");
-                        Console.WriteLine("");
-
-                    }
 
                 }
-                
+                else
+                {
+                }
             d:
                 if (Battlesentaku.controlrunsucbreak == 1)
                 {
                     Console.WriteLine("");
                     Console.WriteLine("__________________________________________________________");
                     Console.WriteLine("");
-                    //  break;
+                  //  break;
                 }
-
-            }
-
+            
         }
+
     }
 }
 

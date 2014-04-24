@@ -7,7 +7,6 @@ namespace ConsoleApplication1
 {
     class game_battle_content
     {
-        /*
         public static void Battledisplay()
             
         {
@@ -32,7 +31,7 @@ namespace ConsoleApplication1
                     Console.Write("輪到玩家攻擊!");
                     Console.ReadLine();
                     Console.Write("請選擇動作: 1 攻擊 2 魔法 3 逃跑 你選擇: ");
-                    Battlesentaku.battlesentaku =Console.ReadLine();
+                    Battlesentaku.battlesentaku = Console.ReadLine();
                   
                     if (Battlesentaku.battlesentaku == "1")
                     {
@@ -126,15 +125,15 @@ namespace ConsoleApplication1
                 {
                     Console.WriteLine("你失敗了!要再試一次嗎?");
                     Console.WriteLine("選1代表繼續,選2代表關閉程式");
-                    Battlesentaku.battlesentaku1 =Console.ReadLine();
-                    if (Battlesentaku.battlesentaku1 == "1")
+                    Battlesentaku.battlesentaku = Console.ReadLine();
+                    if (Battlesentaku.battlesentaku == "1")
                     {
                         Battlesentaku.playerhp = 100;
                         Battlesentaku.monsterhp1 = 100;
                         Battlesentaku.playermana = 100;
                         goto a;
                     }
-                    else if (Battlesentaku.battlesentaku1 == "2")
+                    else if (Battlesentaku.battlesentaku == "2")
                     {
                         System.Environment.Exit(System.Environment.ExitCode);
                     }
@@ -151,6 +150,6 @@ namespace ConsoleApplication1
                     break;
                 }
             }
-        }*/
+        }
     }
 }

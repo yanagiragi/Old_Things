@@ -10,8 +10,8 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            battle2.Battle2display();
-           //battle1.Battle1display();
+            //battle2.Battle2display();
+            //battle1.Battle1display();
                
             Console.WriteLine("     這是一個，悲傷到淚流不止，但又令人喜極而泣的故事....");
             Console.WriteLine("");

@@ -77,20 +77,17 @@ namespace ConsoleApplication1
 
         a:
             Console.Write("怎麼辦? 1 推開她，乾我屁事! 2 好吧,我喜歡幫助別人，尤其是倒在路邊的老太太!  ");
-            
-            
-            
-            Textroadline.textroadline1 = Console.ReadLine();
+            Textroadline.textroadline1 = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("");
-            while (Textroadline.textroadline1 != "1" && Textroadline.textroadline1 != "2")
+            while (Textroadline.textroadline1 != 1 && Textroadline.textroadline1 != 2)
             {
                 Console.WriteLine("輸入錯誤!");
                 Console.Write("怎麼辦? 1 推開她不理她，乾我屁事! 2 好吧,我喜歡幫助別人，尤其是倒在路邊的老太太!  ");
-                Textroadline.textroadline1 = Console.ReadLine();
+                Textroadline.textroadline1 = Convert.ToInt32(Console.ReadLine());
 
             }  // 當input的是123以外的數字時,重做
 
-            if (Textroadline.textroadline1 == "1")
+            if (Textroadline.textroadline1 == 1)
             {
                 Console.WriteLine("\"滾開!干我屁屁事!\"你朝倒在路邊的老太太踹了一腳");
                 Console.ReadLine();
@@ -119,7 +116,7 @@ namespace ConsoleApplication1
                     goto b;
                 }
             }
-            else if (Textroadline.textroadline1 == "2")
+            else if (Textroadline.textroadline1 == 2)
             {
                 goto c;
             }
@@ -141,17 +138,17 @@ namespace ConsoleApplication1
 
         d:
             Console.Write("怎麼辦? 1 用力撞開 2 走側門 ");
-            Textroadline.textroadline1 =Console.ReadLine();
+            Textroadline.textroadline1 = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("");
-            while (Textroadline.textroadline1 != "1" && Textroadline.textroadline1 != "2")
+            while (Textroadline.textroadline1 != 1 && Textroadline.textroadline1 != 2)
             {
                 Console.WriteLine("輸入錯誤!");
                 Console.Write("怎麼辦? 1 用力撞開 2 走側門 ");
-                Textroadline.textroadline1 = Console.ReadLine();
+                Textroadline.textroadline1 = Convert.ToInt32(Console.ReadLine());
 
             }  // 當input的是12以外的數字時,重做
 
-            if (Textroadline.textroadline1 == "2")
+            if (Textroadline.textroadline1 == 2)
             {
                 Console.WriteLine("你走向側門。");
                 Console.ReadLine();
@@ -196,7 +193,7 @@ namespace ConsoleApplication1
 
 
             }
-            else if (Textroadline.textroadline1 == "1")
+            else if (Textroadline.textroadline1 == 1)
             {
                 Console.WriteLine("在撞了第三次後，門終於被撞開。於是{0}走進了魔王城。", openingending.playername);
                 Console.ReadLine();
