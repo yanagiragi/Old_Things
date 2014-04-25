@@ -1,2 +1,0 @@
-kindergarten.html and kinndergarten.class in \bin 
-kindergarten.java in src ��

@@ -1,41 +1,36 @@
-import javax.swing.JOptionPane ; 
+import javax.swing.JOptionPane;
 
-
-
-
-
-
-
-
-
-
-import java.awt.Graphics;
-
-import javax.swing.*;
-
-import java.util.Scanner;
 import java.util.Random;
-import java.util.Arrays;
 
-public class pro1 extends JApplet
+public class count
 {
-	
-	public  void paint(Graphics g)
+	public static String[] counts(int ss,int s1,char[] impChar)
 	{
-		super.paint(g);
 		
-		char[] impChar = new char[4];
-		//char[] impChar = {'O','R','R','G'};
-		char[] refChar = {'R','G','B','Y','W','O'};	
+			
 		
 		String end = JOptionPane.showInputDialog("Enter your guess(4 letters");
+		end = end.toUpperCase();
+		
+
 		char[] tmpChar = end.toCharArray(); 
+		
+		
+		char[] tmpChar1 = new char[4];
+		char[] impChar1 = new char[4];
+		for(int r=0;r<4;r++)
+		{
+			tmpChar1[r]=tmpChar[r];
+			impChar1[r]=impChar[r];
+		}
+		
 		
 		while(tmpChar.length !=4)
 		{			
 			JOptionPane.showMessageDialog(null,"Wrong Input!");
 			end= JOptionPane.showInputDialog("Enter your guess(4 letters");		
 			tmpChar = end.toCharArray(); 	
+			end.toUpperCase();
 		}
 		while(
 				(tmpChar[0] != 'R' && tmpChar[0] != 'G' && tmpChar[0] != 'B' && tmpChar[0] != 'Y' && tmpChar[0] != 'W' && tmpChar[0] != 'O' ) || 
@@ -50,50 +45,17 @@ public class pro1 extends JApplet
 		
 			
 		
-		Random random = new Random();		
-		int a; // for input random numbers(index) to  reference char array
-		for(int i=0 ; i < impChar.length ; i++)
-		{
-			a = random.nextInt(6);
-			switch(a)
-			{
-				case 0:
-					impChar[i] = refChar[0];
-					break;
-				case 1:
-					impChar[i] = refChar[1];
-					break;
-				case 2:
-					impChar[i] = refChar[2];
-					break;
-				case 3:
-					impChar[i] = refChar[3];
-					break;
-				case 4:
-					impChar[i] = refChar[4];
-					break;
-				case 5:
-					impChar[i] = refChar[5];
-					break;
-				default:		
-					break;		
-			}	
-		}
+				
+		/*
 		
 		char[] chknum1  = new char[4];		
 		char[] chknum2  = new char[4];
-		//char[] sortedtmp = new char[4];
-		//char[] sortedimp = new char[4];
 		int[]  chknum11 = new int[4];
 		int[]  chknum22 = new int[4];
 		
-		System.out.print("TMP IS "+ tmpChar[0]+" "+tmpChar[1]+" "+tmpChar[2]+" "+tmpChar[3]+"\n");		
-		class2.counting(tmpChar, chknum1, chknum11);		
-		System.out.print("IMP IS");for(int i=0 ; i < impChar.length ; i++){System.out.print(" "+ impChar[i]);}System.out.print("\n");		
-		class2.counting(impChar, chknum2, chknum22);
+		count11.counting(tmpChar, chknum1, chknum11);		
+		count11.counting(impChar, chknum2, chknum22);
 		
-		int ss = 0; //ss represents numbers of element color and places both right,A
-		int s1 = 0; //s1 represents numbers of element color and places NOT  right,B
 		int maxsame1 = Math.max(Math.max(chknum11[0], chknum11[1]),Math.max(chknum11[2], chknum11[3]));
 		int maxsame2 = Math.max(Math.max(chknum22[0], chknum22[1]),Math.max(chknum22[2], chknum22[3]));
 		
@@ -181,11 +143,9 @@ public class pro1 extends JApplet
 			 if (tmpChar[count] == impChar[count])
 		 		{
 				 ss=ss+1;
-				 //System.out.println("ss is in "+count);
-		 		}		 	
+				}		 	
 	     }
-		 
-		 
+		
 		 //counting start!
 		 for(int count=0 ; count < 4 ; count++ )
 		 {
@@ -273,7 +233,7 @@ public class pro1 extends JApplet
 						 }						 
 					 }
 					 else if(maxsame2 ==3) //maxsame1 =1 && maxsame2 =3
-					 {							
+					 {					
 									if(maxnum3of2 == tmpChar[0] || maxnum3of2 == tmpChar[1] || maxnum3of2 == tmpChar[2] || maxnum3of2 == tmpChar[3] )
 									{
 										
@@ -394,27 +354,28 @@ public class pro1 extends JApplet
 							 
 						else if(maxsame2 == 3)
 						{
+							//System.out.println("123");							
 							if(maxnum3of2 == maxnum2of1)
-							{
-								if(impChar[cde1] == tmpChar[efg1]  || impChar[cde1] == tmpChar[efg2])	
-									s1=2;
+							{								
+								if(impChar[cde2] == tmpChar[efg1]  || impChar[cde2] == tmpChar[efg11])	
+									s1=3;
 								else
-									s1=1;
+									s1=2;
 							}
-							else if(maxnum3of2 != maxnum2of1 && (maxnum3of2== tmpChar[efg1] || maxnum3of2== tmpChar[efg2]) )
+							else if(maxnum3of2 != maxnum2of1 && !(maxnum3of2== tmpChar[efg1] || maxnum3of2== tmpChar[efg11]) )
 							{
-								if(impChar[cde1] == maxnum3of2)	
-									s1=2;
-								else if(impChar[cde1] == tmpChar[efg1]  || impChar[cde1] == tmpChar[efg2])	
-									s1=2;
-								else
+								if(impChar[cde2] == maxnum2of2)	
 									s1=1;
+								else if(impChar[cde2] == tmpChar[efg1]  || impChar[cde2] == tmpChar[efg11])	
+									s1=1;
+								else
+									s1=0;
 							}
 							else
 							{
 								if(impChar[cde2] == maxnum2of1)	
 									s1=2;
-								else if(impChar[cde2] == tmpChar[efg1]  || impChar[cde2] == tmpChar[efg2])	
+								else if(impChar[cde2] == tmpChar[efg1]  || impChar[cde2] == tmpChar[efg11])	
 									s1=2;
 								else
 									s1=1;
@@ -474,18 +435,20 @@ public class pro1 extends JApplet
 							}
 						 else if(maxsame2 ==2)
 						 	{
-							 if(maxnum2chk2 != 0) // 2=AABC
-							 {
-								if(maxnum2of1 == maxnum2of2 || maxnum2of1 == maxnum2of22)
+							 if(maxnum2chk2 == 0) // 2=AABC
+							 {								 
+								if(maxnum2of1 == maxnum2of2 || maxnum2of11 == maxnum2of2)
 								{
 									if(impChar[efg2] == maxnum2of1 || impChar[efg2] == maxnum2of11 || impChar[efg22] == maxnum2of1 || impChar[efg22] == maxnum2of11)
 										s1 =3;
 									else
-										s1 =3;  //**********/
+										s1 =2;  
 								}
 								else
 								{
-									if(impChar[efg2] == maxnum2of1 || impChar[efg2] == maxnum2of11 || impChar[efg22] == maxnum2of1 || impChar[efg22] == maxnum2of11)
+									if((impChar[efg2] == maxnum2of1 && impChar[efg22] == maxnum2of11) || (impChar[efg2] == maxnum2of11 && impChar[efg22] == maxnum2of1))
+										s1 =2;
+									else if(impChar[efg2] == maxnum2of1 || impChar[efg2] == maxnum2of11 || impChar[efg22] == maxnum2of1 || impChar[efg22] == maxnum2of11)
 										s1 =1;
 									else
 										s1 =0;
@@ -494,51 +457,25 @@ public class pro1 extends JApplet
 							 }		
 							 else // 2=AABB
 							 {
-								if((maxnum2of1 == maxnum2of2 && maxnum2of11 == maxnum2of22) || (maxnum2of1 == maxnum2of22 && maxnum2of11 == maxnum2of2))
-								{
-									int count4=0;
-									for(int count3 = 0; count3 < 4; count3++)
-									{
-										if(tmpChar[count3] == impChar[count3])
-											count4++;
-									}
-									if(count4==0)
-										s1 = 4;
-									else if (count4 ==2)
-										s1 = 4;
-									else //coun4=1
-										s1 = 4;
-								}
-								else if(maxnum2of1 == maxnum2of2 || maxnum2of11 == maxnum2of22 && !((maxnum2of1 == maxnum2of2 && maxnum2of11 == maxnum2of22) || (maxnum2of1 == maxnum2of22 && maxnum2of11 == maxnum2of2)))
-								{
-									int count4=0;
-									for(int count3 = 0; count3 < 4; count3++)
-									{
-										if(tmpChar[count3] == impChar[count3])
-											count4++;
-									}
-									if(count4==0)
+								 if((maxnum2of1 == maxnum2of2 && maxnum2of11 == maxnum2of22) || (maxnum2of1 == maxnum2of22 && maxnum2of11 == maxnum2of2))
+									s1 = 4;
+								else if(maxnum2of1 == maxnum2of2 || maxnum2of1 == maxnum2of22 || maxnum2of11 == maxnum2of2 || maxnum2of11 == maxnum2of22)
 										s1 = 2;
-									else if (count4 ==1)
-										s1 = 2;
-									else //count4=2
-										s1 = 2;
-								}
 								else // maxnum2of1 != maxnum2of2 && maxnum2of11 != maxnum2of22
-								 s1 = 2;
+								 s1 = 0;
 							 }
 						 }
 					
 					 else if(maxsame2 == 3)
 						{
-							if(maxnum3of2 == maxnum2of1 || maxnum3of2 == maxnum2of11)
+						 	if(maxnum3of2 == maxnum2of1 || maxnum3of2 == maxnum2of11)
 							{
-								if((maxnum2of11== impChar[cde2] || maxnum2of11== impChar[cde2]) )
-									s1=4;
-								else
+								if((maxnum2of11== impChar[cde2] || maxnum2of1== impChar[cde2]) )
 									s1=3;
+								else
+									s1=2;
 							}
-							else if((maxnum3of2 != maxnum2of1 && maxnum3of2 != maxnum2of11) && (maxnum2of11== impChar[efg1] || maxnum2of11== impChar[efg2]) )
+							else if(maxnum2of11== impChar[cde2] || maxnum2of1== impChar[cde2] )
 									s1=1;
 							else
 									s1=0;			
@@ -602,6 +539,7 @@ public class pro1 extends JApplet
 						 }
 						 else
 						 {
+							 
 							 if( maxnum2of2 == maxnum3of1 )
 							 {
 								 if(impChar[efg2] == tmpChar[cde1] || impChar[efg22] == tmpChar[cde1])
@@ -611,19 +549,19 @@ public class pro1 extends JApplet
 							 }
 							 else if ( maxnum2of2 == tmpChar[cde1])
 							 {
+								
 								 if(impChar[efg2] == maxnum3of1 || impChar[efg22] == maxnum3of1)
-									 s1=2;
+									 s1=2;								 
 								 else
 									 s1=1;
 							 }
 							 else
 							 {
+								 s1=0;
 								 if(impChar[efg2] == maxnum3of1 || impChar[efg22] == maxnum3of1)
-									 s1=1;
-								 else if(impChar[efg2] == tmpChar[cde1] || impChar[efg22] == tmpChar[cde1])
-									 s1=1;
-								 else
-									 s1=0;
+									 s1++;
+								 if(impChar[efg2] == tmpChar[cde1] || impChar[efg22] == tmpChar[cde1])
+									 s1++;
 							 }
 						 }
 					 }
@@ -725,13 +663,46 @@ public class pro1 extends JApplet
 				 
 				 
 		   	}//end for2
-		 }	//end for1	 
-		 
-		 //System.out.println("ss is "+ss);
-		 //System.out.println("s1 is "+s1);
-		 System.out.println(ss+"A"+(s1-ss)+"B"); //AAAA|AAAA AND ABCD|ABCD TYPE
+		 }	//end for1	 */
 		
+		ss=0;
+		s1=0;
+		for(int q=0;q<4;q++)
+		{
+			if(tmpChar1[q] == impChar1[q])
+			{
+				ss++;
+				tmpChar1[q] = 'P';
+				impChar1[q] = 'P';				
+			}			
+		}	
+		
+		
+		
+		for(int q=0;q<4;q++)
+		{
+			for(int qq=0;qq<4;qq++)
+			{
+				if(tmpChar1[q]!='P' && tmpChar1[q] == impChar1[qq] && impChar1[qq]!='P' )
+				{
+					impChar1[qq] = 'P';	
+						s1++;
+						break;
+				}
+			}
+		}
+		
+		System.out.println(impChar);
+		System.out.println(ss+" "+s1);
+		
+		 String[] sss1 = new String[6];
+		 sss1[0]=Integer.toString(ss);
+		 sss1[1]=Integer.toString((s1-ss));
+		 sss1[2]=Character.toString(tmpChar[0]) ;
+		 sss1[3]=Character.toString(tmpChar[1]);
+		 sss1[4]=Character.toString(tmpChar[2]);
+		 sss1[5]=Character.toString(tmpChar[3]);
+		 return sss1;
 	}
-	
-	
 }
+		 
