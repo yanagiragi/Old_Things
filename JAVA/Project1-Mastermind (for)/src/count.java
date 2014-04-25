@@ -69,9 +69,6 @@ public class count
 			}
 		}
 		
-		System.out.println(impChar);
-		System.out.println(ss+" "+s1);
-		
 		 String[] sss1 = new String[6];
 		 sss1[0]=Integer.toString(ss);
 		 sss1[1]=Integer.toString((s1-ss));
