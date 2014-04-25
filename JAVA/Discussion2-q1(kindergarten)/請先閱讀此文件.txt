@@ -1,2 +1,2 @@
-kindergarten.html 及 kindergarten.class 置於 \bin 內
-kindergarten.java 置於 \src 內
+kindergarten.html and kinndergarten.class in \bin 
+kindergarten.java in src 嚙踝蕭
