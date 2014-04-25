@@ -12,14 +12,10 @@ public class count
 		String end = JOptionPane.showInputDialog("Enter your guess(4 letters");
 		end = end.toUpperCase();
 		
-		/*************/System.out.println(end);
-		
-		//String end="RRGG";
 		char[] tmpChar = end.toCharArray(); 
 		
-		/************/
-		char[] tmpChar1 = new char[4];
-		char[] impChar1 = new char[4];
+		//char[] tmpChar1 = new char[4];
+	//	char[] impChar1 = new char[4];
 		for(int r=0;r<4;r++)
 		{
 			tmpChar1[r]=tmpChar[r];
@@ -48,7 +44,7 @@ public class count
 			
 		
 				
-		/*
+		
 		
 		char[] chknum1  = new char[4];		
 		char[] chknum2  = new char[4];
@@ -665,38 +661,9 @@ public class count
 				 
 				 
 		   	}//end for2
-		 }	//end for1	 */
+		 }	//end for1	 
 		
-		ss=0;
-		s1=0;
-		for(int q=0;q<4;q++)
-		{
-			if(tmpChar1[q] == impChar1[q])
-			{
-				ss++;
-				tmpChar1[q] = 'P';
-				impChar1[q] = 'P';				
-			}			
-		}	
-		
-		
-		
-		for(int q=0;q<4;q++)
-		{
-			for(int qq=0;qq<4;qq++)
-			{
-				if(tmpChar1[q]!='P' && tmpChar1[q] == impChar1[qq] && impChar1[qq]!='P' )
-				{
-					impChar1[qq] = 'P';	
-						s1++;
-						break;
-				}
-			}
-		}
-		
-		System.out.println(impChar);
-		System.out.println(ss+" "+s1);
-		
+	
 		 String[] sss1 = new String[6];
 		 sss1[0]=Integer.toString(ss);
 		 sss1[1]=Integer.toString((s1-ss));
