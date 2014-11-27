@@ -1,0 +1,50 @@
+TITLE 11/19 Class Activities1						(main.asm)
+;author : ragi
+;Completed Time : 2014/10/15 11:17AM
+;Main Purpose :reverse the inout string using Macro.
+reverse		MACRO	$bc
+				mov		ebx,0;	
+				mov		ecx,byteCount;
+
+			loop1:
+				mov		eax,[buffer+ebx];
+				push	eax;
+				inc		ebx;	
+				loop	loop1;
+
+			mov		ecx,byteCount;
+
+			loop2:
+				pop		eax;
+				call	writechar;
+				loop	loop2;
+
+
+			ENDM		
+INCLUDE Irvine32.inc
+.data
+
+	buffer      DWORD  50  DUP(0)
+    byteCount   DWORD   ? 
+	tmpchar		DWORD	?
+	temp		DWORD	?
+    
+.code
+main PROC
+	call	readint
+	mov		temp,eax;
+
+	add		eax,temp;
+	add		eax,temp;
+	add		eax,temp;
+	mov		temp,eax;
+	mov     edx,OFFSET buffer                ; 指定緩衝區
+    mov     ecx,temp				 ; 扣掉null，指定最大讀取字串長度
+    call	ReadString                       ; 輸入字串
+    mov     byteCount , eax                      ; 字串的長度
+	reverse		byteCount
+
+
+	exit
+main ENDP
+END main
