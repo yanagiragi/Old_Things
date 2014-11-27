@@ -1,0 +1,76 @@
+TITLE 10/29 Class Activities3						(main.asm)
+;author : ragi
+;Completed Time : 2014/10/29 07:39PM
+;Main Purpose : print 質因數分解
+
+INCLUDE Irvine32.inc
+
+.data
+var1 dword ?;word input
+var2 dword 0;word to div	外層迴圈count
+var3 dword 2;eax afer div	除完之後的商
+var4 dword 1;			外層迴圈count
+var5 dword 1;			用來把外層迴圈count歸零成1的
+space dword ' ';		用來輸出空格
+
+.code
+main PROC
+
+  call readint;
+  mov var1,eax;
+  
+
+loop1:
+
+	inc var2;                  	; 1~ var1
+
+	mov eax,var1;
+	mov edx,0;
+	div var2;
+	mov var3,eax;			;var3=商 edx=餘數
+
+	cmp edx,0;
+	jne loop2;			;如果不為因數，重新loop一次
+	
+	mov eax,var5;
+	mov var4,eax; 			; reset var4 to 1;
+
+loop4: 					;check var3 is prime or not
+	mov eax,var3;
+	cmp eax,var4			;內層count == 商
+	jne loop3;			;不等於進入下面的loop3判斷
+	je loop2;			;等於就跳出內層loop
+	
+
+loop3: 
+	inc var4			;先加一，因為var4從2開始++
+
+	mov eax,var3;
+	mov edx,0;
+	div var4			;把商除以var4
+
+	cmp edx,0;			;如果商是var4的倍數
+	jne loop4;			;不是繼續loop，直到商是var4的倍數
+	je loop5;			;是的話到loop5,loop5判斷此時的var4是不是就是商
+
+loop5:
+	mov eax,var3
+	cmp var4,eax
+	jne loop2;			;var4不是商代表商不是質數
+
+	call writedec;			;輸出商(已在eax中)
+	mov eax,space
+	call writechar	
+
+loop2:
+	
+	mov ebx,var1;			;比較外層count有沒有等於input
+	mov ecx,var2;			;其實應該移一個到暫存器就好了
+	cmp ebx,ecx;
+   	jne loop1;			;不等於代表沒有loop完，繼續
+
+	
+
+	exit
+main ENDP
+END main

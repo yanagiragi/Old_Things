@@ -1,0 +1,24 @@
+TITLE 10/15 Class Activities1						(main.asm)
+;author : ragi
+;Completed Time : 2014/10/15 11:17AM
+;Main Purpose : This program displays the user input in binary,decimal,hexadecimal.
+
+INCLUDE Irvine32.inc
+.data
+	val1     dword  40000
+	val2     dword  40000h
+	val3     dword  20000h
+.code
+main PROC
+	call READINT;
+	mov val2,eax;
+	mov eax,val2;
+	call WRITEBIN;
+	 call  Crlf 
+	call WRITEINT;
+	 call  Crlf 
+	call WRITEHEX;
+	 call  Crlf 
+	exit
+main ENDP
+END main

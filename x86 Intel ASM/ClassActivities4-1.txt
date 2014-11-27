@@ -1,0 +1,81 @@
+TITLE 11/05 Class Activities4						(main.asm)
+;author : ragi
+;Completed Time : 2014/11/05 11:53AM
+;Main Purpose : print 指定機率顏色(RGB)的e 共20*128個
+INCLUDE Irvine32.inc
+
+.data
+	eword dword 'e';
+	space dword ' ';
+	count dword 0;
+	count2 dword 0;
+	color dword ?;
+	redL dword 40;
+	blueL dword 40;
+	greenL dword 48;
+
+.code
+main PROC
+	
+	call readint;
+	mov redL,eax;
+	mov blueL,eax;
+	mov greenL,eax;
+
+	call readint;
+	add blueL,eax;
+	add greenL,eax;
+
+	call readint;
+	add blueL,eax;
+	;jmp loop5;
+
+loop3:
+	mov edx,0;
+	mov count,edx;
+
+loop1:
+	
+	mov eax,100;
+	call RandomRange;
+	cmp eax,redL;
+	jb color1;
+	cmp eax,greenL;
+	jb color3
+	cmp eax,blueL
+	jb color4
+	
+color1:
+	mov eax,red;
+	jmp calls;
+color3:
+	mov eax,green;
+	jmp calls;
+color4:
+	mov eax,blue;
+calls:
+	call settextcolor;
+
+	mov eax,eword;
+	call Writechar;
+	;mov eax,space;
+	;call WriteChar;
+	
+	mov ebx,count;
+	inc ebx;
+	mov count,ebx;
+	cmp ebx,128;          ;;;;;;;;;;;;;;;
+	jne loop1;
+	je loop2;
+
+ loop2:
+ 	call crlf;
+	mov ecx,count2;
+ 	inc ecx;
+	mov count2,ecx;
+	cmp ecx,20;          ;;;;;;;;;;;;;;;
+	jne loop3;
+	je loop5;
+loop5:exit
+main ENDP
+END main

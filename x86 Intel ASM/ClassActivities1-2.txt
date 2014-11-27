@@ -1,0 +1,51 @@
+TITLE 10/15 Class Activities2						(main.asm)
+;author : ragi
+;Completed Time : 2014/10/15 5:17PM
+;Main Purpose : print all number that is smaller than the input except 7's Multiple
+
+INCLUDE irvine32.inc;
+.data
+	val1     dword  14
+	val2     dword  7
+	val3     dword  20000h
+	val4	 dword  0;
+.code
+main PROC
+	call READINT;
+	mov val1,eax;
+	mov edx,1;   
+	mov eax,edx;
+	mov ecx,7;
+	elop:
+		cmp edx,ecx;
+		je jjj;
+
+		
+		call WRITEDEC;
+		call crlf;	
+		jmp lll;
+
+		jjj:	
+			mov val3,ecx;
+			inc val3; 1
+			inc val3; 2
+			inc val3; 3
+			inc val3; 4
+			inc val3; 5
+			inc val3; 6 
+			inc val3; 7
+			mov ecx,val3;
+			jmp lll;
+
+		lll:
+		inc edx;		
+		mov eax,edx;			
+		cmp edx,val1;		
+		jne elop;
+
+
+	
+	exit
+
+main endp
+end main

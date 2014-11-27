@@ -1,0 +1,75 @@
+TITLE 10/22 Class Activities2						(main.asm)
+;author : ragi
+;Completed Time : 2014/10/22 12:57AM
+;Main Purpose : print %d(input) Fibonacci Numbers
+
+INCLUDE irvine32.inc;
+.data
+	var1    dword	?;
+	var2    dword	0;
+	var3	dword	1;
+	var4	dword	1;
+	var5	dword	0;
+.code
+main PROC
+	call READINT;
+	cmp eax,1;
+	je PP;
+	cmp eax,2
+	je PP2;
+
+	dec eax;
+	dec eax;
+	mov var1,eax	;var1 number to be printed.
+	mov eax,1
+	call WRITEDEC
+	call Crlf
+	call WRITEDEC
+	call Crlf
+
+	mov ebx,var1;
+	mov ecx,var2;
+	cmp ebx,ecx;
+	jne FF
+
+FF:
+					;mov var5,var4;
+	mov ebx,var4;
+	mov var5,ebx;
+					;add var5,var3;
+	add ebx,var3;
+	mov var5,ebx;
+					;mov var3,var4;
+	mov ecx,var3;
+	mov var4,ecx;
+					;mov var3,var5;
+	mov edx,var5;
+	mov var3,edx;
+		
+	mov eax,var5;
+	call WRITEDEC
+	call Crlf
+
+	mov edx,var2;
+	inc edx;
+	mov var2,edx;
+
+	mov ebx,var1;
+	mov ecx,var2;
+	cmp ebx,ecx;
+	jne FF
+	je KK;
+
+PP2:
+	mov eax,1;
+	call WRITEDEC
+	call Crlf
+
+PP:	
+	mov eax,1;
+	call WRITEDEC
+KK:
+	exit
+
+main endp
+end main

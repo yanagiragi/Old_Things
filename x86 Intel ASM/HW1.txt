@@ -1,0 +1,237 @@
+TITLE 11/26 HW1						(main.asm)
+;author : ragi
+;Completed Time : 2014/11/16 22:17PM
+;Main Purpose : Calculator for infix and input may only positive. Bugs:if output = 65534 or 65536 will printf Error.
+INCLUDE Irvine32.inc
+.data
+
+	buffer      byte   50  DUP(0)
+	operarr     dword  50  DUP(0)
+	stkamt		dword	0;
+	pre			dword	0
+    byteCount   dword	? 
+	tempatoi	dword	0;
+	temp		dword	0;
+	ten			dword  10;
+	arrc		dword	0;
+	ERM      byte   "Error." 
+.code
+main PROC
+
+	mov     edx,OFFSET buffer                ; 指定緩衝區
+    mov     ecx,( SIZEOF buffer ) - 1        ; 扣掉null，指定最大讀取字串長度
+    call	ReadString                       ; 輸入字串
+	mov		byteCount,eax;
+	mov		ecx,byteCount;
+	mov		esi,0;
+.while ecx >0
+	
+	mov		temp,0;
+	mov		tempatoi,0;	
+	movzx	eax,[buffer+esi];
+	
+	cmp		eax,'+';
+	je		ip_operator;
+	cmp		eax,'-';
+	je		ip_operator;
+	cmp		eax,'*';
+	je		ip_operator;
+	cmp		eax,'/';
+	je		ip_operator;
+	.while [buffer+esi]<='9' && [buffer+esi]>='0'; //atoi
+			add		eax,-'0';
+			mov		temp,eax;
+			mov		eax,tempatoi;
+			mul		ten;
+			add		eax,temp;
+			mov		tempatoi,eax;
+			inc		esi;
+			sub		ecx,1;	
+			movzx	eax,[buffer+esi];
+	.endw
+
+	mov		eax,tempatoi;
+	push	eax;
+	inc		stkamt;
+	
+	jmp		loop_OE;
+
+ip_operator:
+	
+		cmp		eax,'*'
+		jne		lp_div;
+		lp_multi:
+					mov		temp,0;
+					mov		tempatoi,0;
+					inc		esi;
+					movzx	eax,[buffer+esi];
+					pop		ebx;
+				
+					call	isdigit;
+					jnz		lp_error;
+
+					.while [buffer+esi]<='9' && [buffer+esi]>='0' && ecx>0; //atoi
+							add		eax,-'0';
+								mov		temp,eax;
+								mov		eax,tempatoi;
+								mul		ten;
+								add		eax,temp;
+								mov		tempatoi,eax;
+								inc		esi;
+								sub		ecx,1;	
+								movzx	eax,[buffer+esi];
+					.endw
+					mov		eax,tempatoi
+					mul		ebx;
+					push	eax;				
+					;inc		stkamt;
+					sub		ecx,1; 	
+					jmp		loop_OE;
+		lp_div:	
+					cmp		eax,'/';
+					jne		lp_porm;				
+					mov		temp,0;
+					mov		tempatoi,0;
+					inc		esi;
+					movzx	eax,[buffer+esi];
+					pop		ebx;
+
+					call	isdigit;
+					jnz		lp_error;
+					
+					
+					.while [buffer+esi]<='9' && [buffer+esi]>='0' && ecx>0; //atoi
+							add		eax,-'0';
+							mov		temp,eax;
+							mov		eax,tempatoi;
+							mul		ten;
+							add		eax,temp;
+							mov		tempatoi,eax;
+							inc		esi;
+							sub		ecx,1;	
+							movzx	eax,[buffer+esi];
+					.endw
+					mov		temp,ebx;
+					mov		ebx,tempatoi
+					mov		eax,temp;
+					div		ebx;
+					push	eax;
+					sub		ecx,1; 
+					jmp		loop_OE;
+
+		lp_porm:
+					cmp		eax,'+';
+					jne		mi;
+					mov		eax,65534	
+					jmp		psh;
+				mi:
+					mov		eax,65535
+				psh:
+					push	eax;
+					inc		stkamt;
+					inc		esi
+					dec		ecx;
+					jmp		loop_OE;
+loop_OE:
+.endw
+	
+
+	mov		ecx,stkamt;
+	cmp		ecx,1;
+	jne		enf;
+	mov		esi,0
+	pop		eax;
+	mov		operarr[esi],eax;
+	jmp		ens;
+enf:	
+	mov		esi,0
+lp_revs:
+.while	ecx!=0
+	pop		eax;
+	;call	dumpregs;
+	mov		operarr[esi],eax;
+	add		esi,4;
+	inc		arrc;
+	dec		ecx;
+.endw
+	sub		esi,4;
+	mov		ecx,stkamt;
+lp_ll:
+.while	ecx!=1
+
+
+	;pop		eax;
+	mov		eax,operarr[esi];
+	;call	dumpregs
+	sub		esi,4;
+
+	cmp		eax,65534;
+	je		lp_error;
+	cmp		eax,65535;
+	je		lp_error;
+	
+
+	mov		pre,eax;
+	;pop		eax;
+	
+	mov		eax,operarr[esi];
+	;call	dumpregs
+	sub		esi,4;
+	cmp		eax,65534;
+	jne		minus2
+	
+	;pop		eax;
+	mov		eax,operarr[esi];
+	add		eax,pre;
+	;push	eax;
+	mov		operarr[esi],eax;
+	jmp		end_pl;
+
+minus2:
+	cmp		eax,65535;
+	jne		minus3
+	;pop		eax;
+	mov		eax,operarr[esi];
+		
+	cmp		eax,65534;
+	je		lp_error;
+	cmp		eax,65535;
+	je		lp_error;
+
+	sub		pre,eax;
+	mov		eax,pre;
+	;push	eax;	
+	
+	mov		operarr[esi],eax;
+	jmp		end_pl;
+minus3:
+	jmp		lp_error;
+
+end_pl:
+	dec		ecx;
+	dec		ecx;
+	.endw
+	
+	;cmp		ecx,1
+	;jne		lp_ll;	
+	
+ens:
+	call	crlf
+	;pop		eax;
+	mov		eax,operarr[esi];
+	cmp		eax,65535;
+	je		lp_error;
+	cmp		eax,65534;
+	jae		lp_error;
+	call	writedec;
+	jmp		true_end
+lp_error:
+	mov		edx,offset	ERM;
+	call	writestring;
+true_end:
+	exit
+main ENDP
+END main
+
+
+
