@@ -1,25 +1,29 @@
 TITLE 11/26 HW1						(main.asm)
 ;author : ragi
 ;Completed Time : 2014/11/16 22:17PM
-;Main Purpose : Calculator for infix and input may only positive. Bugs:if output = 65534 or 65536 will printf Error.
+;Main Purpose : Calculator for infix and input & output may only positive and integer. Deal with Error checks.
+;Special Remind:
+		;1.if output > 65534 the output will be error. 
+		;2.If you only enter one interger , the output will be the integer you input.
+
 INCLUDE Irvine32.inc
 .data
 
 	buffer      byte   50  DUP(0)
-	operarr     dword  50  DUP(0)
-	stkamt		dword	0;
-	pre			dword	0
-    byteCount   dword	? 
-	tempatoi	dword	0;
-	temp		dword	0;
-	ten			dword  10;
-	arrc		dword	0;
-	ERM      byte   "Error." 
+	operarr     dword  50  DUP(0)		;//store reverse stack
+	stkamt	    dword	0;		;//count amount of "push" 
+	pre	    dword	0		;//previous element,using while dealing + and -
+   	byteCount   dword	? 		;//store input length
+	tempatoi    dword	0;		;//temp int for atoi
+	temp	    dword	0;		;//temp int for atoi
+	ten         dword      10;		;//10
+	arrc	    dword	0;		;//temp int for atoi
+	ERM         byte   "Error." 		;counts when control reverse stack
 .code
 main PROC
 
 	mov     edx,OFFSET buffer                ; 指定緩衝區
-    mov     ecx,( SIZEOF buffer ) - 1        ; 扣掉null，指定最大讀取字串長度
+    mov     ecx,( SIZEOF buffer ) - 1    	 ; 扣掉null，指定最大讀取字串長度
     call	ReadString                       ; 輸入字串
 	mov		byteCount,eax;
 	mov		ecx,byteCount;
@@ -38,7 +42,7 @@ main PROC
 	je		ip_operator;
 	cmp		eax,'/';
 	je		ip_operator;
-	.while [buffer+esi]<='9' && [buffer+esi]>='0'; //atoi
+	.while [buffer+esi]<='9' && [buffer+esi]>='0'	;//atoi
 			add		eax,-'0';
 			mov		temp,eax;
 			mov		eax,tempatoi;
@@ -48,13 +52,13 @@ main PROC
 			inc		esi;
 			sub		ecx,1;	
 			movzx	eax,[buffer+esi];
-	.endw
+	.endw						;//end atoi
 
-	mov		eax,tempatoi;
+	mov		eax,tempatoi;			;after atoi,the result stores on tempatoi
 	push	eax;
 	inc		stkamt;
 	
-	jmp		loop_OE;
+	jmp		loop_OE;			;//inc esi and loop;
 
 ip_operator:
 	
@@ -68,7 +72,7 @@ ip_operator:
 					pop		ebx;
 				
 					call	isdigit;
-					jnz		lp_error;
+					jnz		lp_error;	;//error checking
 
 					.while [buffer+esi]<='9' && [buffer+esi]>='0' && ecx>0; //atoi
 							add		eax,-'0';
@@ -80,16 +84,18 @@ ip_operator:
 								inc		esi;
 								sub		ecx,1;	
 								movzx	eax,[buffer+esi];
-					.endw
-					mov		eax,tempatoi
+					.endw						;//end atoi
+
+					mov		eax,tempatoi			;after atoi,the result stores on tempatoi
 					mul		ebx;
-					push	eax;				
-					;inc		stkamt;
-					sub		ecx,1; 	
-					jmp		loop_OE;
+					push	eax;					
+					;inc		stkamt;				;//pop and push,so the amount doesn't change
+					sub		ecx,1; 				;//loop count-1 NO NEED TO INC ESI,cause when jump out atoi,str ptr already run to next char.
+					jmp		loop_OE;			;//inc esi and loop;
+
 		lp_div:	
 					cmp		eax,'/';
-					jne		lp_porm;				
+					jne		lp_porm;			;//operator is +or-				
 					mov		temp,0;
 					mov		tempatoi,0;
 					inc		esi;
@@ -97,7 +103,7 @@ ip_operator:
 					pop		ebx;
 
 					call	isdigit;
-					jnz		lp_error;
+					jnz		lp_error;	;//error checking
 					
 					
 					.while [buffer+esi]<='9' && [buffer+esi]>='0' && ecx>0; //atoi
@@ -111,104 +117,102 @@ ip_operator:
 							sub		ecx,1;	
 							movzx	eax,[buffer+esi];
 					.endw
-					mov		temp,ebx;
-					mov		ebx,tempatoi
-					mov		eax,temp;
-					div		ebx;
+					mov		temp,ebx;		;//exchange ebx to eax  step1
+					mov		ebx,tempatoi		;//exchange ebx to tempatoi
+					mov		eax,temp;		;//exchange ebx to eax  step2(end)
+					div		ebx;	
 					push	eax;
-					sub		ecx,1; 
+					sub		ecx,1; 			;//loop count-1 NO NEED TO INC ESI,cause when jump out atoi,str ptr already run to next char.
 					jmp		loop_OE;
 
-		lp_porm:
+		lp_porm:	;porm "means plus or minus"
 					cmp		eax,'+';
 					jne		mi;
-					mov		eax,65534	
+					mov		eax,65534		;//if is + ,push 65534
 					jmp		psh;
 				mi:
-					mov		eax,65535
+					mov		eax,65535		;//else if is - ,push 65535
 				psh:
 					push	eax;
-					inc		stkamt;
-					inc		esi
-					dec		ecx;
+					inc		stkamt;			;//stack amount++;
+					inc		esi			;//str ptr++
+					dec		ecx;			;//loop count-1
 					jmp		loop_OE;
-loop_OE:
+loop_OE:	;OE stands for "O"uter_"E"ntrance
 .endw
 	
 
 	mov		ecx,stkamt;
-	cmp		ecx,1;
+	cmp		ecx,1;							;//if only one int inputed,push to opperarr ,display and exit.
 	jne		enf;
 	mov		esi,0
 	pop		eax;
 	mov		operarr[esi],eax;
-	jmp		ens;
+	jmp		ens;							;//end of controling "if only one int inputed,push to opperarr ,display and exit."
 enf:	
 	mov		esi,0
-lp_revs:
-.while	ecx!=0
+lp_revs:									;rev means reverse
+.while	ecx!=0									;push stack element to operarr >> reverse stack >> Imitate quene(because calculation is from right to left)
 	pop		eax;
 	;call	dumpregs;
 	mov		operarr[esi],eax;
 	add		esi,4;
-	inc		arrc;
-	dec		ecx;
-.endw
-	sub		esi,4;
-	mov		ecx,stkamt;
-lp_ll:
-.while	ecx!=1
-
+	inc		arrc;							;arrc is count for next step while it will calculate the leaving "operarr"
+	dec		ecx;							;or else infinete loop
+.endw										;end reverse
+	sub		esi,4;							;sub esi to rear of operarr(for last operation esi is been plused)
+	mov		ecx,stkamt;						;set ecx as loop account(BUT we did not use "loop" command)
+lp_ll:										;ll doesn't mean anything	
+.while	ecx!=1									;reason of != 1 is beacuse after dealing all operator(+,-),there should only be one element left in operarr.
 
 	;pop		eax;
-	mov		eax,operarr[esi];
+	mov		eax,operarr[esi];					;pop has change to dequene operarr;
 	;call	dumpregs
 	sub		esi,4;
 
-	cmp		eax,65534;
-	je		lp_error;
-	cmp		eax,65535;
-	je		lp_error;
-	
+	cmp		eax,65534;		;//error checking
+	je		lp_error;		;//error checking
+	cmp		eax,65535;		;//error checking
+	je		lp_error;		;//error checking
+		
 
-	mov		pre,eax;
-	;pop		eax;
-	
-	mov		eax,operarr[esi];
+	mov		pre,eax;						;store eax to pre
+
+	;pop		eax;	
+	mov		eax,operarr[esi];					;pop has change to dequene operarr;
 	;call	dumpregs
 	sub		esi,4;
-	cmp		eax,65534;
+	cmp		eax,65534;						;if not  + then is -
 	jne		minus2
 	
 	;pop		eax;
-	mov		eax,operarr[esi];
+	mov		eax,operarr[esi];					;pop has change to dequene operarr;
 	add		eax,pre;
 	;push	eax;
-	mov		operarr[esi],eax;
+	mov		operarr[esi],eax;					;pop has change to enquene operarr;
 	jmp		end_pl;
 
 minus2:
 	cmp		eax,65535;
-	jne		minus3
+	jne		minus3							;if not + and not - means ERROR. go to displat error message.
 	;pop		eax;
-	mov		eax,operarr[esi];
+	mov		eax,operarr[esi];					;pop has change to dequene operarr;
 		
-	cmp		eax,65534;
-	je		lp_error;
-	cmp		eax,65535;
-	je		lp_error;
+	cmp		eax,65534;		;//error checking
+	je		lp_error;		;//error checking
+	cmp		eax,65535;		;//error checking
+	je		lp_error;		;//error checking
 
 	sub		pre,eax;
 	mov		eax,pre;
-	;push	eax;	
-	
-	mov		operarr[esi],eax;
+	;push	eax;		
+	mov		operarr[esi],eax;					;push has change to enquene operarr;
 	jmp		end_pl;
 minus3:
-	jmp		lp_error;
+	jmp		lp_error;						;//display error message
 
 end_pl:
-	dec		ecx;
+	dec		ecx;							;because dequene 3 and enquene 1
 	dec		ecx;
 	.endw
 	
@@ -216,18 +220,18 @@ end_pl:
 	;jne		lp_ll;	
 	
 ens:
-	call	crlf
+	call	crlf								;dequene last element and display
 	;pop		eax;
 	mov		eax,operarr[esi];
-	cmp		eax,65535;
-	je		lp_error;
-	cmp		eax,65534;
-	jae		lp_error;
-	call	writedec;
-	jmp		true_end
+	cmp		eax,65535;		;//error checking
+	je		lp_error;		;//error checking
+	cmp		eax,65534;		;//error checking
+	jae		lp_error;		;//error checking
+	call		writedec;
+	jmp		true_end		;//skip error message
 lp_error:
-	mov		edx,offset	ERM;
-	call	writestring;
+	mov		edx,offset	ERM;  ;//display error message
+	call		writestring;	       ;//display error message
 true_end:
 	exit
 main ENDP

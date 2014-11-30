@@ -1,0 +1,103 @@
+TITLE 11/26 Class Activities1						(main.asm)
+;author : ragi
+;Completed Time : 2014/11/28 3:17AM
+;Main Purpose :let user can store data into sturct and key "Q" to exit active mode and display data inputed.
+
+Employee STRUCT
+IdNum BYTE "000000000"
+LastName BYTE 30 DUP(0)
+Years WORD 0
+SalaryHistory DWORD 0,0,0,0
+Employee ENDS
+
+INCLUDE Irvine32.inc
+.data
+
+	buffer      byte   50  DUP(0)
+	worker		Employee 50 DUP(< >)
+
+	str1		byte "SalaryHistory:",0
+	str2		byte "Years:",0
+	str3		byte "LastName:",0
+	str4		byte "IDNumber:",0
+
+.code
+main PROC
+
+	mov edx,OFFSET buffer
+	mov ecx,(SIZEOF buffer)-1
+	mov		esi,0;
+	mov		edi,0;
+
+	mov		edx,offset str4
+	call	writestring;
+	mov		edx,offset worker.IdNum;
+	add edx,edi
+    call	ReadString            		
+
+Input:	
+	mov		edx,offset str3
+	call	writestring;
+	mov		edx,offset worker.LastName;
+	add edx,edi
+    call	ReadString   
+	
+	mov	edx,OFFSET str2
+	call	WriteString
+	call	ReadInt
+	mov		(Employee PTR worker[edi]).Years,ax
+
+	mov		edx,OFFSET str1
+	call	 WriteString
+	call	 ReadInt
+	mov		(Employee PTR worker[edi]).SalaryHistory,eax	
+	
+	add		edi,TYPE Employee
+
+	call	crlf;
+
+	mov		edx,offset str4
+	call	writestring;
+	mov		edx,offset worker.IdNum;
+	add		edx,edi	
+    call	ReadString   
+	.if		[worker.Idnum+edi]!='Q'
+		jmp Input
+	.endif
+
+    .while esi < edi
+	mov edx,OFFSET str1
+	call WriteString
+	mov edx,OFFSET worker.IdNum
+	add edx,esi
+	call WriteString
+	call crlf
+
+	mov edx,OFFSET str2
+	call WriteString
+
+	mov edx,OFFSET worker.LastName
+	add edx,esi
+	call WriteString
+	call crlf
+
+	mov edx,OFFSET str3
+	call WriteString
+
+	mov ax,(Employee PTR worker[esi]).Years
+	call writeDec
+	call crlf
+
+	mov edx,OFFSET str4
+	call WriteString
+
+	mov eax,(Employee PTR worker[esi]).SalaryHistory
+	call writeDec
+
+	call crlf
+	add esi,TYPE Employee
+	.endw
+
+	exit
+main ENDP
+END main
